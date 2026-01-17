@@ -16,7 +16,7 @@ import { saveOpponentTeamData } from '../store/team';
 import { afterGameInited, beforeGameInited } from '../utils/async';
 import { checkPage } from '../utils/page';
 import { GameWindow, assertGameWindow } from './base/common';
-import { SeasonArenaGlobal } from './types/season-arena';
+import { HeroData, Opponent, SeasonArenaGlobal } from './types/season-arena';
 
 type SeasonArenaWindow = GameWindow & SeasonArenaGlobal;
 
@@ -33,15 +33,44 @@ export async function SeasonArenaPage(window: Window) {
     await beforeGameInited();
 
     assertSeasonArenaWindow(window);
-    const { hero_data, caracs_per_opponent, opponents } = window;
+    let { hero_data, caracs_per_opponent, opponents } = window;
 
     updateMythicBooster();
     saveOpponentTeam(window);
     const config = getConfig();
     if (config.doSimulateSeason) {
-        addSimulation();
         if (config.addBoosterSimulator) addBoosterSimulator(window);
         if (config.addSkillSimulator) addSkillSimulator(window);
+
+        $(document).ajaxComplete((_event, jqXHR, ajaxOptions) => {
+            const { url, data } = ajaxOptions;
+            if (!url?.startsWith('/ajax.php')) return;
+            if (typeof data === 'string' && data.includes('action=season_arena_reload')) {
+                const { battle_data } = jqXHR.responseJSON as {
+                    battle_data: {
+                        hero_fighter: HeroData;
+                        opponents: Opponent[];
+                        caracs_per_opponent: SeasonArenaWindow['caracs_per_opponent'];
+                    };
+                };
+                ({ hero_fighter: hero_data, opponents, caracs_per_opponent } = battle_data);
+            }
+        });
+
+        const opponentContainer = document.querySelector('.opponents_arena');
+        if (opponentContainer != null) {
+            if (document.querySelectorAll('.season_arena_opponent_container[data-opponent]').length > 0) {
+                addSimulation();
+                new MutationObserver(e => {
+                    addSimulation();
+                }).observe(opponentContainer, {
+                    childList: false,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['data-opponent'],
+                });
+            }
+        }
     }
 
     async function addSimulation() {
