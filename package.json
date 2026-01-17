@@ -1,6 +1,6 @@
 {
   "name": "hh-battle-simulator-v4",
-  "version": "4.14.18",
+  "version": "4.14.19",
   "description": "Add a battle simulator to Hentai Heroes and related games",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "author": "rena",
   "devDependencies": {
-    "@types/jquery": "^3.5.29",
+    "@types/jquery": "^3.5.33",
     "clean-css-loader": "^4.2.1",
-    "jsdom": "^24.0.0",
-    "loader-utils": "^3.2.1",
-    "quicktype-core": "^23.0.104",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.3.3",
-    "webpack": "^5.90.3",
-    "webpack-cli": "^5.1.4"
+    "jsdom": "^27.4.0",
+    "loader-utils": "^3.3.1",
+    "quicktype-core": "^23.2.6",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
   }
 }
