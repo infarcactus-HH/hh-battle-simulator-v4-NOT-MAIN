@@ -237,17 +237,20 @@ async function addGirlTraitsToTooltip(window: GameWindow) {
     }
 
     function getID($target: JQuery) {
-        const data = JSON.parse($target.attr('data-new-girl-tooltip') ?? '');
-        let id = data.id_girl;
+        let id: string | undefined = $target.closest('[data-girl-id]').attr('data-girl-id');
+        if (id == null) {
+            const data = JSON.parse($target.attr('data-new-girl-tooltip') ?? '');
+            id = data.id_girl;
+        }
         if (id == null) {
             const icon = $target.is('[girl-ico-src]') ? $target : $target.find('[girl-ico-src]');
-            id = icon
-                .attr('girl-ico-src')
-                ?.match(/pictures\/girls\/(\d+)\/(?:ico|ava|grade_skins\/ico)/)?.[1] as string;
+            id = icon.attr('girl-ico-src')?.match(/pictures\/girls\/(\d+)\/(?:ico|ava|grade_skins\/ico)/)?.[1];
+            id ??= icon.attr('src')?.match(/pictures\/gallery\/\d+\/\d+x\/(\d+)-.+\.png/)?.[1];
         }
         if (id == null) {
             const icon = $target.is('img[src]') ? $target : $target.find('img[src]');
-            id = icon.attr('src')?.match(/pictures\/girls\/(\d+)\/(?:ico|ava|grade_skins\/ico)/)?.[1] as string;
+            id = icon.attr('src')?.match(/pictures\/girls\/(\d+)\/(?:ico|ava|grade_skins\/ico)/)?.[1];
+            id ??= icon.attr('src')?.match(/pictures\/gallery\/\d+\/\d+x\/(\d+)-.+\.png/)?.[1];
         }
         return id;
     }
@@ -316,7 +319,9 @@ async function addGirlTraitsToTooltip(window: GameWindow) {
     }
     if (checkPage('/activities.html')) {
         const pop_hero_girls = window.pop_hero_girls as any;
-        Object.values(pop_hero_girls).forEach((e: any) => addToMap(e));
+        if (pop_hero_girls != null) {
+            Object.values(pop_hero_girls).forEach((e: any) => addToMap(e));
+        }
     }
     if (checkPage('/pantheon.html')) {
         if (Array.isArray(girl_rewards)) {
