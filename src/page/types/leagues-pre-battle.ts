@@ -346,7 +346,7 @@ export interface UpgradeQuests {
 }
 
 export interface PurpleSkillTiersInfo {
-    "1": The1;
+    [key: string]: The1;
 }
 
 export interface The1 {

@@ -200,7 +200,7 @@ export async function EditTeamPage(window: Window) {
             currentTeam.girls = teamMembers.map(e => {
                 const id = e.id_girl;
                 const girlData = teamGirls.find(girl => girl.id_girl == id);
-                if (girlData != null) return { ...e, skills: girlData.skills };
+                if (girlData != null) return { ...e, skills: girlData.skills, girl: { element_data: e.element_data } };
 
                 const skills: any = {};
                 const tier4 = e.skill_tiers_info[4]?.skill_points_used ?? 0;
@@ -218,7 +218,7 @@ export async function EditTeamPage(window: Window) {
                         skills[13] = { skill: { percentage_value: 20 * tier5 } }; // reflect
                     if (['fire', 'water'].includes(element)) skills[14] = { skill: { percentage_value: 6 * tier5 } }; // execute
                 }
-                return { ...e, skills };
+                return { ...e, skills, girl: { element_data: e.element_data } };
             });
 
             const elementCounts = Object.fromEntries(Object.keys(elements).map(e => [e, 0]));
