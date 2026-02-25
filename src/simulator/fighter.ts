@@ -16,10 +16,10 @@ export function calcBattlerFromFighters(fighter: Fighter, opponent: Fighter | { 
     });
 
     const getSkillPercentage = (id: number) =>
-        girls.map(e => e.skills[id]?.skill.percentage_value ?? 0).reduce((p, c) => p + c, 0) / 100;
+        girls.map(e => e.skills === undefined ? 0 : e.skills[id]?.skill.percentage_value ?? 0).reduce((p, c) => p + c, 0) / 100;
 
     const centerGirlSkills = girls[0]?.skills;
-    const get5thSkillPercentageFromGirl = (skills: Record<number, Skill>, id: number) => {
+    const get5thSkillPercentageFromGirl = (skills: Record<number, Skill> | undefined, id: number) => {
         const skill = skills?.[id]?.skill;
         return skill == null ? 0 : (skill.percentage_value ?? parseFloat(skill.display_value_text ?? 0)) / 100;
     };

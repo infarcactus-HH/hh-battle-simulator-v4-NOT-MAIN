@@ -1,5 +1,5 @@
 interface Girl {
-    skills: Record<number, Skill>;
+    skills?: Record<number, Skill>;
     // id_member: string;
     id_girl: string | number;
     // shards: string;
