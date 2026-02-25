@@ -12,7 +12,7 @@ interface Girl {
     // id_places_of_power: null | string;
     // date_added: string;
     // awakening_level: string;
-    // girl: GirlGirl;
+    girl: GirlGirl;
     // salary: number;
     // pay_time: number;
     // pay_in: number;
@@ -28,5 +28,5 @@ interface Girl {
     // awakening_cost: number;
     // skill_trait: string;
     // skill_tiers_unlocked: number[];
-    // skill_tiers_info: { [key: string]: SkillTiersInfo };
+    skill_tiers_info: { [key: string]: SkillTiersInfo };
 }
